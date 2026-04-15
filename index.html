@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Graph Algorithms</title>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/theme/black.min.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+  :root {
+    --amber:  #f5a623;
+    --green:  #4ecb8d;
+    --purple: #a78bfa;
+    --blue:   #60a5fa;
+    --red:    #f87171;
+    --bg:     #0a0a0f;
+    --bg2:    #10101a;
+    --bg3:    #181824;
+    --border: #2a2a3a;
+    --text:   #e8e8f0;
+    --muted:  #8888a8;
+  }
+
+  .reveal-viewport { background: var(--bg); }
+  .reveal .slides section { background: transparent; }
+
+  .reveal { font-family: 'DM Sans', sans-serif; color: var(--text); }
+  .reveal h1, .reveal h2, .reveal h3 { font-family: 'Playfair Display', serif; font-weight: 700; }
+  .reveal h1 { font-size: 1.6em; color: var(--amber); line-height: 1.1; }
+  .reveal h2 { font-size: 1.1em; color: var(--amber); margin-bottom: .2em; }
+  .reveal h3 { font-size: .78em; color: var(--green); margin-bottom: .15em; }
+  .reveal p  { font-size: .56em; line-height: 1.45; color: var(--text); }
+  .reveal li { font-size: .54em; line-height: 1.45; margin-bottom: .1em; }
+  .reveal code { font-family: 'JetBrains Mono', monospace; font-size: .72em; }
+  .reveal pre  { box-shadow: none; background: var(--bg3); border: 1px solid var(--border);
+                 border-radius: 6px; padding: .3em .5em; margin: .25em 0; }
+  .reveal pre code { font-size: .52em; line-height: 1.35; background: transparent; color: #cdd6f4; }
+
+  /* ── slide chrome ── */
+  .slide-hdr {
+    display: flex; align-items: center; gap: .4em;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: .2em; margin-bottom: .3em;
+  }
+  .slide-hdr .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: .42em; font-weight: 500;
+    color: var(--bg); background: var(--amber);
+    padding: .1em .4em; border-radius: 3px;
+    letter-spacing: .04em;
+  }
+  .slide-hdr h2 { margin: 0; font-size: .95em; }
+
+  /* ── two-column ── */
+  .cols   { display: grid; gap: .5em; }
+  .cols-2 { grid-template-columns: 1fr 1fr; }
+  .cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .cols-6040 { grid-template-columns: 6fr 4fr; }
+  .cols-4060 { grid-template-columns: 4fr 6fr; }
+
+  /* ── cards ── */
+  .card {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 6px; padding: .35em .6em;
+  }
+  .card.amber { border-left: 3px solid var(--amber); }
+  .card.green { border-left: 3px solid var(--green); }
+  .card.purple{ border-left: 3px solid var(--purple); }
+  .card.blue  { border-left: 3px solid var(--blue); }
+  .card.red   { border-left: 3px solid var(--red); }
+  .card h3 { font-size: .64em; margin: 0 0 .12em; }
+  .card p  { font-size: .52em; margin: 0; color: #b8b8d0; }
+  .card ul { margin: 0; padding-left: 1em; }
+  .card li { font-size: .52em; color: #b8b8d0; margin-bottom: .02em; }
+
+  /* ── table ── */
+  .reveal table { width: 100%; border-collapse: collapse; font-size: .5em; }
+  .reveal table th { background: var(--bg3); color: var(--amber); font-weight: 600;
+                     padding: .2em .4em; border: 1px solid var(--border); text-align: left; }
+  .reveal table td { padding: .18em .4em; border: 1px solid var(--border); color: #ccc; }
+  .reveal table tr:nth-child(even) td { background: #0e0e18; }
+
+  /* ── accent spans ── */
+  .a  { color: var(--amber); font-weight: 600; }
+  .g  { color: var(--green); font-weight: 600; }
+  .p  { color: var(--purple); font-weight: 600; }
+  .b  { color: var(--blue); font-weight: 600; }
+  .r  { color: var(--red); font-weight: 600; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* ── SVG graph diagrams ── */
+  svg.diagram { display: block; margin: 0 auto; overflow: visible; }
+
+  /* ── pill badges ── */
+  .pill {
+    display: inline-block; font-family: 'JetBrains Mono', monospace;
+    font-size: .44em; padding: .08em .4em; border-radius: 99px;
+    border: 1px solid; margin: 0 .08em;
+  }
+  .pill.amber { color: var(--amber); border-color: var(--amber); }
+  .pill.green { color: var(--green); border-color: var(--green); }
+  .pill.purple{ color: var(--purple); border-color: var(--purple); }
+  .pill.blue  { color: var(--blue); border-color: var(--blue); }
+
+  /* ── footer — hidden ── */
+  .reveal .slide-footer { display: none; }
+  /* title slide special */
+  .title-slide h1 { font-size: 1.8em; }
+  .title-slide .subtitle {
+    font-size: .7em; color: var(--green); font-family: 'DM Sans', sans-serif;
+    font-weight: 300; letter-spacing: .04em; margin: .3em 0 .6em;
+  }
+  .title-slide .meta { font-size: .48em; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+
+  /* ── super-step animator ── */
+  .ss-row {
+    display: flex; gap: .25em; align-items: center;
+    margin: .1em 0; font-size: .55em; font-family: 'JetBrains Mono', monospace;
+  }
+  .ss-node {
+    padding: .2em .55em; border-radius: 5px; font-size: .9em;
+    background: var(--bg3); border: 1px solid var(--border); color: var(--text);
+  }
+  .ss-node.active { background: #1a2a1a; border-color: var(--green); color: var(--green); }
+  .ss-node.done   { background: #1a1a2a; border-color: var(--purple); color: var(--purple); }
+  .ss-arrow { color: var(--amber); }
+  .ss-label { font-size: .8em; color: var(--muted); margin-left: .3em; }
+
+  /* reduce default margins */
+  .reveal ul, .reveal ol { margin: .15em 0 .15em 1em; }
+.reveal .slides > section { display: flex !important; flex-direction: column !important; overflow-y: auto !important; align-items: stretch !important; justify-content: flex-start !important; }
+</style>
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 01 — Title
+══════════════════════════════════════════════════════════════════ -->
+<section class="title-slide" data-background-color="#0a0a0f">
+  <div style="font-family:'JetBrains Mono',monospace; font-size:.5em; color:var(--muted); margin-bottom:.4em; letter-spacing:.1em;">COMPUTER SCIENCE FUNDAMENTALS SERIES</div>
+  <h1>Graph<br>Algorithms</h1>
+  <div class="subtitle">
+    BFS &middot; DFS &middot; Topological sort &middot; Connected components &middot;<br>
+    Cycle detection &middot; Graph coloring
+  </div>
+  <div style="width:60px; height:3px; background:var(--amber); margin-bottom:1.4em;"></div>
+  <div class="meta">
+    Mid-level software engineer track &nbsp;&middot;&nbsp; 21 slides
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 02 — Graph Representations: Adjacency Matrix
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">02</span>
+    <h2>Graph Representations &mdash; Adjacency Matrix</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <p>A graph <code>G = (V, E)</code> can be stored as a 2D matrix <code>M[i][j]</code> where entry <code>(i, j)</code> is 1 (or the edge weight) if an edge exists between vertices <code>i</code> and <code>j</code>, and 0 otherwise.</p>
+      <table>
+        <tr><th>Property</th><th>Value</th></tr>
+        <tr><td>Space</td><td><code>O(V&sup2;)</code></td></tr>
+        <tr><td>Edge lookup</td><td><code>O(1)</code></td></tr>
+        <tr><td>Iterate neighbours</td><td><code>O(V)</code></td></tr>
+        <tr><td>Add edge</td><td><code>O(1)</code></td></tr>
+        <tr><td>Remove edge</td><td><code>O(1)</code></td></tr>
+      </table>
+      <div class="card amber" style="margin-top:0.7em">
+        <p><strong style="color:var(--amber)">Best for:</strong> dense graphs where <code>|E| &asymp; |V|&sup2;</code>, or when constant-time edge lookup is critical (e.g. Floyd-Warshall).</p>
+      </div>
+    </div>
+    <div>
+      <div style="background:var(--bg2); border:1px solid var(--border); border-radius:6px; padding:.5em;">
+        <svg viewBox="0 0 300 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+          <!-- Graph nodes -->
+          <circle cx="60" cy="40" r="20" fill="#1a1a28" stroke="#f5a623" stroke-width="1.5"/>
+          <text x="60" y="45" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="14" fill="#f5a623">0</text>
+          <circle cx="200" cy="40" r="20" fill="#1a1a28" stroke="#4ecb8d" stroke-width="1.5"/>
+          <text x="200" y="45" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="14" fill="#4ecb8d">1</text>
+          <circle cx="260" cy="140" r="20" fill="#1a1a28" stroke="#a78bfa" stroke-width="1.5"/>
+          <text x="260" y="145" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="14" fill="#a78bfa">2</text>
+          <circle cx="130" cy="140" r="20" fill="#1a1a28" stroke="#60a5fa" stroke-width="1.5"/>
+          <text x="130" y="145" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="14" fill="#60a5fa">3</text>
+          <!-- Edges -->
+          <line x1="80" y1="40" x2="180" y2="40" stroke="#2a2a3a" stroke-width="1.5"/>
+          <line x1="200" y1="60" x2="260" y2="120" stroke="#2a2a3a" stroke-width="1.5"/>
+          <line x1="60" y1="60" x2="130" y2="120" stroke="#2a2a3a" stroke-width="1.5"/>
+          <line x1="150" y1="140" x2="240" y2="140" stroke="#2a2a3a" stroke-width="1.5"/>
+          <!-- Matrix -->
+          <text x="20" y="195" font-family="'JetBrains Mono',monospace" font-size="11" fill="#8888a8">    0 1 2 3</text>
+          <text x="20" y="210" font-family="'JetBrains Mono',monospace" font-size="11" fill="#f5a623">0 [<tspan fill="#e8e8f0">0 1 0 1</tspan>]</text>
+          <text x="20" y="225" font-family="'JetBrains Mono',monospace" font-size="11" fill="#4ecb8d">1 [<tspan fill="#e8e8f0">1 0 1 0</tspan>]</text>
+          <text x="20" y="240" font-family="'JetBrains Mono',monospace" font-size="11" fill="#a78bfa">2 [<tspan fill="#e8e8f0">0 1 0 1</tspan>]</text>
+          <text x="20" y="255" font-family="'JetBrains Mono',monospace" font-size="11" fill="#60a5fa">3 [<tspan fill="#e8e8f0">1 0 1 0</tspan>]</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 03 — Graph Representations: Adjacency List & Edge List
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">03</span>
+    <h2>Adjacency List &amp; Edge List</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <h3>Adjacency list</h3>
+      <p>Each vertex stores a list of its neighbours. The most common representation for sparse graphs.</p>
+      <pre><code class="python">graph = {
+    0: [1, 3],
+    1: [0, 2],
+    2: [1, 3],
+    3: [0, 2]
+}</code></pre>
+      <table>
+        <tr><th>Property</th><th>Value</th></tr>
+        <tr><td>Space</td><td><code>O(V + E)</code></td></tr>
+        <tr><td>Edge lookup</td><td><code>O(degree)</code></td></tr>
+        <tr><td>Iterate neighbours</td><td><code>O(degree)</code></td></tr>
+        <tr><td>Add edge</td><td><code>O(1)</code></td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>Edge list</h3>
+      <p>A flat list of <code>(u, v)</code> pairs (optionally with weight). Minimal storage; useful for algorithms like Kruskal's that iterate all edges.</p>
+      <pre><code class="python">edges = [
+    (0, 1), (0, 3),
+    (1, 2), (2, 3)
+]</code></pre>
+      <table>
+        <tr><th>Property</th><th>Value</th></tr>
+        <tr><td>Space</td><td><code>O(E)</code></td></tr>
+        <tr><td>Edge lookup</td><td><code>O(E)</code></td></tr>
+        <tr><td>Iterate all edges</td><td><code>O(E)</code></td></tr>
+      </table>
+      <div class="card green" style="margin-top:0.5em">
+        <p><strong style="color:var(--green)">Rule of thumb:</strong> use an adjacency list unless you have a specific reason not to. It offers the best balance of space and query performance for most graph problems.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 04 — BFS
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">04</span>
+    <h2>Breadth-First Search (BFS)</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <p>Explore all vertices at distance <code>d</code> before any at distance <code>d+1</code>. Uses a <strong>queue</strong> (FIFO).</p>
+      <pre><code class="python">from collections import deque
+
+def bfs(graph, start):
+    visited = {start}
+    queue = deque([start])
+    order = []
+    while queue:
+        v = queue.popleft()
+        order.append(v)
+        for nb in graph[v]:
+            if nb not in visited:
+                visited.add(nb)
+                queue.append(nb)
+    return order</code></pre>
+      <table>
+        <tr><th>Property</th><th>Value</th></tr>
+        <tr><td>Time</td><td><code>O(V + E)</code></td></tr>
+        <tr><td>Space</td><td><code>O(V)</code></td></tr>
+        <tr><td>Data structure</td><td>Queue (FIFO)</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>Applications</h3>
+      <ul>
+        <li>Shortest path in unweighted graphs</li>
+        <li>Level-order traversal</li>
+        <li>Connected components in undirected graphs</li>
+        <li>Bipartite checking</li>
+        <li>Web crawlers, social-network degree separation</li>
+      </ul>
+      <div style="background:var(--bg2); border:1px solid var(--border); border-radius:6px; padding:.5em; margin-top:0.5em;">
+        <p style="font-size:0.5em; color:var(--muted); margin-bottom:0.3em;">BFS traversal from vertex A:</p>
+        <div class="ss-row">
+          <span class="ss-node active">A</span>
+          <span class="ss-arrow">&rarr;</span>
+          <span class="ss-node active">B</span>
+          <span class="ss-arrow">&rarr;</span>
+          <span class="ss-node active">C</span>
+          <span class="ss-arrow">&rarr;</span>
+          <span class="ss-node">D</span>
+          <span class="ss-arrow">&rarr;</span>
+          <span class="ss-node">E</span>
+          <span class="ss-label">layer 0 &rarr; 1 &rarr; 2</span>
+        </div>
+      </div>
+      <div class="card blue" style="margin-top:0.5em">
+        <p>BFS guarantees the <strong>shortest path</strong> (fewest edges) from source to every reachable vertex in an unweighted graph.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 05 — DFS
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">05</span>
+    <h2>Depth-First Search (DFS)</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <p>Explore as deep as possible along each branch before backtracking. Uses a <strong>stack</strong> (LIFO) &mdash; or recursion.</p>
+      <pre><code class="python">def dfs(graph, start):
+    visited = set()
+    order = []
+    stack = [start]
+    while stack:
+        v = stack.pop()
+        if v in visited:
+            continue
+        visited.add(v)
+        order.append(v)
+        for nb in reversed(graph[v]):
+            if nb not in visited:
+                stack.append(nb)
+    return order</code></pre>
+      <h3 style="margin-top:0.5em">Recursive variant</h3>
+      <pre><code class="python">def dfs_rec(graph, v, visited=None):
+    if visited is None:
+        visited = set()
+    visited.add(v)
+    for nb in graph[v]:
+        if nb not in visited:
+            dfs_rec(graph, nb, visited)
+    return visited</code></pre>
+    </div>
+    <div>
+      <table>
+        <tr><th>Property</th><th>Value</th></tr>
+        <tr><td>Time</td><td><code>O(V + E)</code></td></tr>
+        <tr><td>Space</td><td><code>O(V)</code></td></tr>
+        <tr><td>Data structure</td><td>Stack (LIFO) / recursion</td></tr>
+      </table>
+      <h3 style="margin-top:0.5em">Applications</h3>
+      <ul>
+        <li>Topological sorting</li>
+        <li>Cycle detection</li>
+        <li>Strongly connected components</li>
+        <li>Maze solving &amp; puzzle search</li>
+        <li>Articulation points and bridges</li>
+      </ul>
+      <h3 style="margin-top:0.5em">Edge classification (directed graphs)</h3>
+      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.2em 0;"><span style="font-family:'JetBrains Mono',monospace; color:var(--amber); min-width:7em; font-size:0.9em;">Tree edge</span><span style="color:var(--text)">Edge in the DFS tree itself</span></div>
+      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.2em 0;"><span style="font-family:'JetBrains Mono',monospace; color:var(--green); min-width:7em; font-size:0.9em;">Back edge</span><span style="color:var(--text)">Points to an ancestor &mdash; indicates a cycle</span></div>
+      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.2em 0;"><span style="font-family:'JetBrains Mono',monospace; color:var(--purple); min-width:7em; font-size:0.9em;">Forward edge</span><span style="color:var(--text)">Points to a descendant (non-tree)</span></div>
+      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.2em 0;"><span style="font-family:'JetBrains Mono',monospace; color:var(--blue); min-width:7em; font-size:0.9em;">Cross edge</span><span style="color:var(--text)">Points to a non-ancestor, non-descendant</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 06 — BFS vs DFS Comparison
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">06</span>
+    <h2>BFS vs DFS &mdash; When to Use Which</h2>
+  </div>
+  <table>
+    <tr><th>Criterion</th><th>BFS</th><th>DFS</th></tr>
+    <tr><td>Strategy</td><td>Level by level (queue)</td><td>Branch by branch (stack)</td></tr>
+    <tr><td>Shortest path (unweighted)</td><td><strong style="color:var(--green)">Yes</strong></td><td>No</td></tr>
+    <tr><td>Memory on wide graphs</td><td>High &mdash; stores entire frontier</td><td><strong style="color:var(--green)">Low</strong> &mdash; single branch</td></tr>
+    <tr><td>Memory on deep graphs</td><td><strong style="color:var(--green)">Low</strong></td><td>High &mdash; deep stack</td></tr>
+    <tr><td>Cycle detection (directed)</td><td>Possible but awkward</td><td><strong style="color:var(--green)">Natural</strong> via back edges</td></tr>
+    <tr><td>Topological sort</td><td>Kahn's algorithm (BFS)</td><td>Reverse post-order (DFS)</td></tr>
+    <tr><td>Connected components</td><td>Yes</td><td>Yes</td></tr>
+    <tr><td>Articulation points / bridges</td><td>Not used</td><td><strong style="color:var(--green)">Standard approach</strong></td></tr>
+  </table>
+  <div class="cols cols-2" style="margin-top:0.5em">
+    <div class="card amber">
+      <p><strong style="color:var(--amber)">BFS rule:</strong> when you need the shortest path or must explore by distance (level-order), choose BFS.</p>
+    </div>
+    <div class="card green">
+      <p><strong style="color:var(--green)">DFS rule:</strong> when you need to explore all paths, detect cycles, or compute post-order (topological sort, SCC), choose DFS.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 07 — Topological Sorting
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">07</span>
+    <h2>Topological Sorting</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <p>A linear ordering of vertices in a <strong>DAG</strong> (directed acyclic graph) such that for every directed edge <code>u &rarr; v</code>, vertex <code>u</code> comes before <code>v</code>.</p>
+      <h3>Kahn's algorithm (BFS)</h3>
+      <pre><code class="python">from collections import deque
+
+def kahn(graph, n):
+    indeg = [0] * n
+    for u in range(n):
+        for v in graph[u]:
+            indeg[v] += 1
+    queue = deque(v for v in range(n)
+                    if indeg[v] == 0)
+    order = []
+    while queue:
+        u = queue.popleft()
+        order.append(u)
+        for v in graph[u]:
+            indeg[v] -= 1
+            if indeg[v] == 0:
+                queue.append(v)
+    if len(order) != n:
+        raise ValueError("Cycle detected")
+    return order</code></pre>
+    </div>
+    <div>
+      <h3>DFS-based approach</h3>
+      <pre><code class="python">def topo_dfs(graph, n):
+    visited = [False] * n
+    stack = []
+    def dfs(u):
+        visited[u] = True
+        for v in graph[u]:
+            if not visited[v]:
+                dfs(v)
+        stack.append(u)
+    for v in range(n):
+        if not visited[v]:
+            dfs(v)
+    return stack[::-1]</code></pre>
+      <h3 style="margin-top:0.5em">Applications</h3>
+      <ul>
+        <li>Build system dependency resolution (Make, Gradle)</li>
+        <li>Course prerequisite scheduling</li>
+        <li>Task scheduling with precedence constraints</li>
+        <li>Spreadsheet cell evaluation order</li>
+        <li>Package manager install ordering</li>
+      </ul>
+      <div class="card purple" style="margin-top:0.5em">
+        <p>A topological ordering exists <strong>if and only if</strong> the graph is a DAG. Both Kahn's and DFS run in <code>O(V + E)</code>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 08 — Connected Components
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">08</span>
+    <h2>Connected Components</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <h3>Undirected graphs</h3>
+      <p>A connected component is a maximal set of vertices such that there is a path between every pair. Finding all components: run BFS/DFS from each unvisited vertex.</p>
+      <pre><code class="python">def connected_components(graph, n):
+    visited = [False] * n
+    components = []
+    for v in range(n):
+        if not visited[v]:
+            comp = []
+            stack = [v]
+            while stack:
+                u = stack.pop()
+                if visited[u]:
+                    continue
+                visited[u] = True
+                comp.append(u)
+                for nb in graph[u]:
+                    if not visited[nb]:
+                        stack.append(nb)
+            components.append(comp)
+    return components</code></pre>
+      <p style="font-size:0.5em; color:var(--muted)">Time: <code>O(V + E)</code> &mdash; Space: <code>O(V)</code></p>
+    </div>
+    <div>
+      <h3>Union-Find alternative</h3>
+      <p>Disjoint Set Union (DSU) with path compression and union by rank achieves near-constant time per operation.</p>
+      <pre><code class="python">class UnionFind:
+    def __init__(self, n):
+        self.parent = list(range(n))
+        self.rank = [0] * n
+    def find(self, x):
+        if self.parent[x] != x:
+            self.parent[x] = self.find(
+                self.parent[x])
+        return self.parent[x]
+    def union(self, x, y):
+        px, py = self.find(x), self.find(y)
+        if px == py: return
+        if self.rank[px] < self.rank[py]:
+            px, py = py, px
+        self.parent[py] = px
+        if self.rank[px] == self.rank[py]:
+            self.rank[px] += 1</code></pre>
+      <div class="card blue" style="margin-top:0.5em">
+        <p>Union-Find is <code>O(&alpha;(n))</code> per operation &mdash; effectively constant. Preferred for dynamic connectivity queries and Kruskal's MST.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 09 — Strongly Connected Components
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">09</span>
+    <h2>Strongly Connected Components</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <p>In a <strong>directed graph</strong>, a strongly connected component (SCC) is a maximal set of vertices where every vertex is reachable from every other vertex in the set.</p>
+      <h3>Kosaraju's algorithm</h3>
+      <ol>
+        <li style="font-size:.54em">Run DFS on the original graph; record finish order</li>
+        <li style="font-size:.54em">Transpose the graph (reverse all edges)</li>
+        <li style="font-size:.54em">Run DFS on the transpose in reverse finish order</li>
+        <li style="font-size:.54em">Each DFS tree in step 3 is one SCC</li>
+      </ol>
+      <pre><code class="python">def kosaraju(graph, n):
+    # Step 1: finish order via DFS
+    visited, order = [False]*n, []
+    def dfs1(u):
+        visited[u] = True
+        for v in graph[u]:
+            if not visited[v]: dfs1(v)
+        order.append(u)
+    for v in range(n):
+        if not visited[v]: dfs1(v)
+    # Step 2: transpose
+    rev = [[] for _ in range(n)]
+    for u in range(n):
+        for v in graph[u]: rev[v].append(u)
+    # Step 3: DFS on transpose
+    visited = [False]*n
+    sccs = []
+    def dfs2(u, comp):
+        visited[u] = True
+        comp.append(u)
+        for v in rev[u]:
+            if not visited[v]: dfs2(v, comp)
+    for u in reversed(order):
+        if not visited[u]:
+            c = []
+            dfs2(u, c)
+            sccs.append(c)
+    return sccs</code></pre>
+    </div>
+    <div>
+      <h3>Tarjan's algorithm</h3>
+      <p>Single-pass DFS using a stack and low-link values. More efficient in practice &mdash; no need to transpose the graph.</p>
+      <pre><code class="python">def tarjan(graph, n):
+    idx = [0]
+    stack, on_stack = [], [False]*n
+    index = [-1]*n
+    lowlink = [0]*n
+    sccs = []
+    def strongconnect(u):
+        index[u] = lowlink[u] = idx[0]
+        idx[0] += 1
+        stack.append(u)
+        on_stack[u] = True
+        for v in graph[u]:
+            if index[v] == -1:
+                strongconnect(v)
+                lowlink[u] = min(
+                    lowlink[u], lowlink[v])
+            elif on_stack[v]:
+                lowlink[u] = min(
+                    lowlink[u], index[v])
+        if lowlink[u] == index[u]:
+            comp = []
+            while True:
+                w = stack.pop()
+                on_stack[w] = False
+                comp.append(w)
+                if w == u: break
+            sccs.append(comp)
+    for v in range(n):
+        if index[v] == -1:
+            strongconnect(v)
+    return sccs</code></pre>
+      <div class="card amber" style="margin-top:0.5em">
+        <p>Both algorithms run in <code>O(V + E)</code>. Tarjan uses one DFS pass; Kosaraju uses two but is conceptually simpler.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 10 — Cycle Detection
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">10</span>
+    <h2>Cycle Detection</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <h3>Directed graphs &mdash; DFS colouring</h3>
+      <p>Track three states: <span class="p">WHITE</span> (unvisited), <span class="b">GREY</span> (in current DFS path), <span class="g">BLACK</span> (fully processed). A back edge to a GREY vertex indicates a cycle.</p>
+      <pre><code class="python">def has_cycle_directed(graph, n):
+    WHITE, GREY, BLACK = 0, 1, 2
+    colour = [WHITE] * n
+
+    def dfs(u):
+        colour[u] = GREY
+        for v in graph[u]:
+            if colour[v] == GREY:
+                return True   # back edge
+            if colour[v] == WHITE:
+                if dfs(v):
+                    return True
+        colour[u] = BLACK
+        return False
+
+    return any(colour[v] == WHITE
+               and dfs(v)
+               for v in range(n))</code></pre>
+    </div>
+    <div>
+      <h3>Undirected graphs</h3>
+      <p>Simpler: during DFS, if a neighbour is already visited and is <strong>not</strong> the parent, there is a cycle.</p>
+      <pre><code class="python">def has_cycle_undirected(graph, n):
+    visited = [False] * n
+
+    def dfs(u, parent):
+        visited[u] = True
+        for v in graph[u]:
+            if not visited[v]:
+                if dfs(v, u):
+                    return True
+            elif v != parent:
+                return True
+        return False
+
+    return any(not visited[v]
+               and dfs(v, -1)
+               for v in range(n))</code></pre>
+      <div class="card green" style="margin-top:0.5em">
+        <p><strong style="color:var(--green)">Kahn's shortcut:</strong> if topological sort processes fewer than <code>V</code> vertices, the directed graph contains a cycle.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 11 — Bipartite Checking
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">11</span>
+    <h2>Bipartite Checking</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <p>A graph is <strong>bipartite</strong> if its vertices can be coloured with two colours such that no edge connects two vertices of the same colour. Equivalently: the graph contains no odd-length cycle.</p>
+      <h3>BFS 2-colouring</h3>
+      <pre><code class="python">from collections import deque
+
+def is_bipartite(graph, n):
+    colour = [-1] * n
+    for start in range(n):
+        if colour[start] != -1:
+            continue
+        colour[start] = 0
+        queue = deque([start])
+        while queue:
+            u = queue.popleft()
+            for v in graph[u]:
+                if colour[v] == -1:
+                    colour[v] = 1 - colour[u]
+                    queue.append(v)
+                elif colour[v] == colour[u]:
+                    return False
+    return True</code></pre>
+      <p style="font-size:0.5em; color:var(--muted)">Time: <code>O(V + E)</code> &mdash; same as a single BFS/DFS pass.</p>
+    </div>
+    <div>
+      <div style="background:var(--bg2); border:1px solid var(--border); border-radius:6px; padding:.5em;">
+        <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
+          <!-- Left partition -->
+          <circle cx="60" cy="40" r="18" fill="#2e1e00" stroke="#f5a623" stroke-width="1.5"/>
+          <text x="60" y="45" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#f5a623">A</text>
+          <circle cx="60" cy="100" r="18" fill="#2e1e00" stroke="#f5a623" stroke-width="1.5"/>
+          <text x="60" y="105" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#f5a623">B</text>
+          <circle cx="60" cy="160" r="18" fill="#2e1e00" stroke="#f5a623" stroke-width="1.5"/>
+          <text x="60" y="165" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#f5a623">C</text>
+          <!-- Right partition -->
+          <circle cx="220" cy="70" r="18" fill="#110e1f" stroke="#a78bfa" stroke-width="1.5"/>
+          <text x="220" y="75" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#a78bfa">D</text>
+          <circle cx="220" cy="130" r="18" fill="#110e1f" stroke="#a78bfa" stroke-width="1.5"/>
+          <text x="220" y="135" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#a78bfa">E</text>
+          <!-- Edges -->
+          <line x1="78" y1="40" x2="202" y2="70" stroke="#2a2a3a" stroke-width="1.5"/>
+          <line x1="78" y1="100" x2="202" y2="70" stroke="#2a2a3a" stroke-width="1.5"/>
+          <line x1="78" y1="100" x2="202" y2="130" stroke="#2a2a3a" stroke-width="1.5"/>
+          <line x1="78" y1="160" x2="202" y2="130" stroke="#2a2a3a" stroke-width="1.5"/>
+          <!-- Labels -->
+          <text x="50" y="195" font-family="'DM Sans',sans-serif" font-size="10" fill="#f5a623">Set 1</text>
+          <text x="205" y="195" font-family="'DM Sans',sans-serif" font-size="10" fill="#a78bfa">Set 2</text>
+        </svg>
+      </div>
+      <h3 style="margin-top:0.5em">Applications</h3>
+      <ul>
+        <li>Job assignment problems (workers &harr; tasks)</li>
+        <li>Graph colouring with 2 colours</li>
+        <li>Stable matching (Gale-Shapley)</li>
+        <li>Conflict-free scheduling</li>
+        <li>Network flow modelling</li>
+      </ul>
+      <div class="card purple" style="margin-top:0.5em">
+        <p><strong style="color:var(--purple)">K&ouml;nig's theorem:</strong> in a bipartite graph, the size of the maximum matching equals the size of the minimum vertex cover.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 12 — Articulation Points & Bridges
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">12</span>
+    <h2>Articulation Points &amp; Bridges</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <h3>Definitions</h3>
+      <p>An <strong>articulation point</strong> (cut vertex) is a vertex whose removal disconnects the graph. A <strong>bridge</strong> (cut edge) is an edge whose removal disconnects the graph.</p>
+      <h3 style="margin-top:0.5em">Tarjan's bridge-finding</h3>
+      <pre><code class="python">def find_bridges(graph, n):
+    disc = [-1] * n
+    low = [-1] * n
+    timer = [0]
+    bridges = []
+    def dfs(u, parent):
+        disc[u] = low[u] = timer[0]
+        timer[0] += 1
+        for v in graph[u]:
+            if disc[v] == -1:
+                dfs(v, u)
+                low[u] = min(low[u], low[v])
+                if low[v] > disc[u]:
+                    bridges.append((u, v))
+            elif v != parent:
+                low[u] = min(low[u], disc[v])
+    for v in range(n):
+        if disc[v] == -1:
+            dfs(v, -1)
+    return bridges</code></pre>
+    </div>
+    <div>
+      <h3>Key insight: low-link values</h3>
+      <p>For each vertex <code>u</code>, <code>low[u]</code> is the smallest discovery time reachable from the subtree rooted at <code>u</code> (including back edges).</p>
+      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.2em 0;"><span style="font-family:'JetBrains Mono',monospace; color:var(--amber); min-width:7em; font-size:0.9em;">Bridge</span><span style="color:var(--text)">Edge <code>(u, v)</code> is a bridge if <code>low[v] > disc[u]</code></span></div>
+      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.2em 0;"><span style="font-family:'JetBrains Mono',monospace; color:var(--green); min-width:7em; font-size:0.9em;">Cut vertex</span><span style="color:var(--text)">Non-root <code>u</code> is a cut vertex if some child <code>v</code> has <code>low[v] &ge; disc[u]</code>. Root is a cut vertex if it has &ge; 2 DFS children.</span></div>
+      <h3 style="margin-top:0.5em">Applications</h3>
+      <ul>
+        <li>Network reliability analysis &mdash; single points of failure</li>
+        <li>Critical infrastructure in communication networks</li>
+        <li>Biconnected component decomposition</li>
+        <li>Router/link failure planning in ISP networks</li>
+      </ul>
+      <div class="card red" style="margin-top:0.5em">
+        <p>Both algorithms run in <code>O(V + E)</code>. Removing a bridge always increases the number of connected components by exactly one.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 13 — Euler Paths & Circuits
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">13</span>
+    <h2>Euler Paths &amp; Circuits</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <p>An <strong>Euler path</strong> visits every <em>edge</em> exactly once. An <strong>Euler circuit</strong> is an Euler path that starts and ends at the same vertex.</p>
+      <h3>Existence conditions</h3>
+      <table>
+        <tr><th></th><th>Euler Path</th><th>Euler Circuit</th></tr>
+        <tr><td><strong>Undirected</strong></td><td>Exactly 0 or 2 odd-degree vertices</td><td>All vertices have even degree</td></tr>
+        <tr><td><strong>Directed</strong></td><td>At most one vertex with <code>out - in = 1</code>, at most one with <code>in - out = 1</code>, rest equal</td><td>Every vertex has <code>in-degree = out-degree</code></td></tr>
+      </table>
+      <div class="card blue" style="margin-top:0.5em">
+        <p><strong style="color:var(--blue)">K&ouml;nigsberg bridges (1736):</strong> Euler proved no walk can cross all seven bridges exactly once &mdash; the birth of graph theory.</p>
+      </div>
+    </div>
+    <div>
+      <h3>Hierholzer's algorithm</h3>
+      <pre><code class="python">def euler_circuit(graph, n):
+    # graph: adjacency list (mutable)
+    adj = [list(nbrs) for nbrs in graph]
+    stack = [0]
+    circuit = []
+    while stack:
+        v = stack[-1]
+        if adj[v]:
+            u = adj[v].pop()
+            # For undirected, also remove
+            # reverse edge from adj[u]
+            stack.append(u)
+        else:
+            circuit.append(stack.pop())
+    return circuit[::-1]</code></pre>
+      <p style="font-size:0.5em; color:var(--muted)">Time: <code>O(E)</code> &mdash; each edge is processed exactly once.</p>
+      <h3 style="margin-top:0.5em">Applications</h3>
+      <ul>
+        <li>DNA fragment assembly (de Bruijn graphs)</li>
+        <li>Chinese postman problem</li>
+        <li>Circuit board routing</li>
+        <li>Network routing optimisation</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 14 — Hamiltonian Paths & Circuits
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">14</span>
+    <h2>Hamiltonian Paths &amp; Circuits</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <p>A <strong>Hamiltonian path</strong> visits every <em>vertex</em> exactly once. A <strong>Hamiltonian cycle</strong> is a Hamiltonian path that returns to the start vertex.</p>
+      <h3>Euler vs Hamiltonian</h3>
+      <table>
+        <tr><th></th><th>Euler</th><th>Hamiltonian</th></tr>
+        <tr><td>Visits</td><td>Every <strong>edge</strong> once</td><td>Every <strong>vertex</strong> once</td></tr>
+        <tr><td>Existence check</td><td><code>O(V + E)</code> &mdash; degree conditions</td><td><strong>NP-complete</strong></td></tr>
+        <tr><td>Finding path</td><td><code>O(E)</code></td><td>Exponential (backtracking)</td></tr>
+      </table>
+      <div class="card red" style="margin-top:0.5em">
+        <p><strong style="color:var(--red)">NP-complete:</strong> no known polynomial-time algorithm exists for deciding whether a Hamiltonian path/cycle exists. This is one of the classic hard problems in CS.</p>
+      </div>
+    </div>
+    <div>
+      <h3>Backtracking approach</h3>
+      <pre><code class="python">def hamiltonian_path(graph, n):
+    path = [0]
+    visited = {0}
+    def backtrack():
+        if len(path) == n:
+            return True
+        u = path[-1]
+        for v in graph[u]:
+            if v not in visited:
+                visited.add(v)
+                path.append(v)
+                if backtrack():
+                    return True
+                path.pop()
+                visited.remove(v)
+        return False
+    if backtrack():
+        return path
+    return None</code></pre>
+      <h3 style="margin-top:0.5em">Sufficient conditions</h3>
+      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.2em 0;"><span style="font-family:'JetBrains Mono',monospace; color:var(--amber); min-width:5em; font-size:0.9em;">Dirac</span><span style="color:var(--text)">If every vertex has degree &ge; <code>n/2</code>, a Hamiltonian cycle exists</span></div>
+      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.2em 0;"><span style="font-family:'JetBrains Mono',monospace; color:var(--green); min-width:5em; font-size:0.9em;">Ore</span><span style="color:var(--text)">If <code>deg(u) + deg(v) &ge; n</code> for every non-adjacent pair, a Hamiltonian cycle exists</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 15 — Graph Coloring
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">15</span>
+    <h2>Graph Coloring</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <p>Assign colours to vertices so that no two adjacent vertices share the same colour. The minimum number of colours needed is the <strong>chromatic number</strong> <code>&chi;(G)</code>.</p>
+      <h3>Greedy colouring</h3>
+      <pre><code class="python">def greedy_colour(graph, n):
+    colour = [-1] * n
+    for u in range(n):
+        used = {colour[v] for v in graph[u]
+                if colour[v] != -1}
+        c = 0
+        while c in used:
+            c += 1
+        colour[u] = c
+    return colour</code></pre>
+      <p style="font-size:0.5em; color:var(--muted)">Greedy uses at most <code>&Delta; + 1</code> colours, where <code>&Delta;</code> is the maximum degree. Not always optimal.</p>
+      <div class="card amber" style="margin-top:0.5em">
+        <p><strong style="color:var(--amber)">Brooks' theorem:</strong> every connected graph (not a complete graph or odd cycle) can be coloured with at most <code>&Delta;</code> colours.</p>
+      </div>
+    </div>
+    <div>
+      <h3>Key chromatic numbers</h3>
+      <table>
+        <tr><th>Graph type</th><th>&chi;(G)</th></tr>
+        <tr><td>Bipartite</td><td>2</td></tr>
+        <tr><td>Odd cycle</td><td>3</td></tr>
+        <tr><td>Complete graph <code>K_n</code></td><td><code>n</code></td></tr>
+        <tr><td>Planar graph</td><td>&le; 4 (four colour theorem)</td></tr>
+        <tr><td>Tree</td><td>2 (if &ge; 2 vertices)</td></tr>
+      </table>
+      <h3 style="margin-top:0.5em">Applications</h3>
+      <ul>
+        <li>Register allocation in compilers (interference graph)</li>
+        <li>Exam timetabling &mdash; no student has two exams at once</li>
+        <li>Map colouring</li>
+        <li>Frequency assignment in cellular networks</li>
+        <li>Sudoku (9-colouring of the constraint graph)</li>
+      </ul>
+      <div class="card purple" style="margin-top:0.5em">
+        <p>Deciding if <code>&chi;(G) &le; k</code> is NP-complete for <code>k &ge; 3</code>. For <code>k = 2</code> it reduces to bipartite checking &mdash; solvable in <code>O(V + E)</code>.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 16 — Planarity
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">16</span>
+    <h2>Planarity</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <p>A graph is <strong>planar</strong> if it can be drawn on a plane without any edge crossings.</p>
+      <h3>Euler's formula for planar graphs</h3>
+      <p style="font-size:0.65em; color:var(--amber); font-family:'JetBrains Mono',monospace; margin:0.4em 0;">V - E + F = 2</p>
+      <p>where <code>V</code> = vertices, <code>E</code> = edges, <code>F</code> = faces (including the outer face).</p>
+      <h3 style="margin-top:0.5em">Corollaries</h3>
+      <ul>
+        <li>For a simple planar graph: <code>E &le; 3V - 6</code></li>
+        <li>For a bipartite planar graph: <code>E &le; 2V - 4</code></li>
+        <li>Every planar graph has a vertex of degree &le; 5</li>
+      </ul>
+      <div class="card amber" style="margin-top:0.5em">
+        <p><strong style="color:var(--amber)">Kuratowski's theorem:</strong> a graph is planar if and only if it contains no subdivision of <code>K&lt;sub&gt;5&lt;/sub&gt;</code> or <code>K&lt;sub&gt;3,3&lt;/sub&gt;</code>.</p>
+      </div>
+    </div>
+    <div>
+      <h3>Non-planar graphs</h3>
+      <div class="cols cols-2" style="margin-top:0.3em">
+        <div class="card red">
+          <h3 style="color:var(--red)">K<sub>5</sub></h3>
+          <p>Complete graph on 5 vertices. Has 10 edges but <code>3(5) - 6 = 9</code> &mdash; violates the bound.</p>
+        </div>
+        <div class="card red">
+          <h3 style="color:var(--red)">K<sub>3,3</sub></h3>
+          <p>Complete bipartite graph. Has 9 edges but <code>2(6) - 4 = 8</code> &mdash; violates the bipartite bound.</p>
+        </div>
+      </div>
+      <h3 style="margin-top:0.5em">Testing planarity</h3>
+      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.2em 0;"><span style="font-family:'JetBrains Mono',monospace; color:var(--amber); min-width:9em; font-size:0.9em;">Hopcroft-Tarjan</span><span style="color:var(--text)">Linear-time <code>O(V)</code> planarity test based on path addition</span></div>
+      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.2em 0;"><span style="font-family:'JetBrains Mono',monospace; color:var(--green); min-width:9em; font-size:0.9em;">Boyer-Myrvold</span><span style="color:var(--text)">Linear-time algorithm that also produces the planar embedding or a Kuratowski subgraph</span></div>
+      <h3 style="margin-top:0.5em">Applications</h3>
+      <ul>
+        <li>Circuit board layout (PCB routing)</li>
+        <li>VLSI chip design</li>
+        <li>Geographic information systems</li>
+        <li>The four colour theorem applies only to planar graphs</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 17 — Directed Acyclic Graphs (DAGs)
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">17</span>
+    <h2>Directed Acyclic Graphs (DAGs)</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <p>A DAG is a directed graph with no directed cycles. DAGs are the foundation for dependency modelling and scheduling.</p>
+      <h3>Properties</h3>
+      <ul>
+        <li>Has at least one topological ordering</li>
+        <li>Has at least one source (in-degree 0) and one sink (out-degree 0)</li>
+        <li>Longest path is computable in <code>O(V + E)</code> via topological sort + dynamic programming</li>
+        <li>Number of paths between two vertices computable in <code>O(V + E)</code></li>
+      </ul>
+      <h3 style="margin-top:0.5em">Longest path in a DAG</h3>
+      <pre><code class="python">def longest_path_dag(graph, n):
+    order = topo_dfs(graph, n)
+    dist = [0] * n
+    for u in order:
+        for v in graph[u]:
+            dist[v] = max(dist[v],
+                          dist[u] + 1)
+    return max(dist)</code></pre>
+    </div>
+    <div>
+      <h3>DAG applications</h3>
+      <div class="cols cols-2" style="margin-top:0.3em">
+        <div class="card amber">
+          <h3>Build systems</h3>
+          <p>Make, Bazel, Gradle model task dependencies as DAGs</p>
+        </div>
+        <div class="card green">
+          <h3>Version control</h3>
+          <p>Git commit history forms a DAG</p>
+        </div>
+        <div class="card purple">
+          <h3>Data pipelines</h3>
+          <p>Apache Airflow, dbt model ETL stages as DAGs</p>
+        </div>
+        <div class="card blue">
+          <h3>Neural networks</h3>
+          <p>Computation graphs in deep learning are DAGs</p>
+        </div>
+      </div>
+      <div class="card amber" style="margin-top:0.5em">
+        <p><strong style="color:var(--amber)">Critical path:</strong> the longest path in a project DAG determines the minimum completion time. Shortening any non-critical task does not reduce total time.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 18 — Graph Algorithm Complexity
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">18</span>
+    <h2>Graph Algorithm Complexity Reference</h2>
+  </div>
+  <table>
+    <tr><th>Algorithm</th><th>Time</th><th>Space</th><th>Use case</th></tr>
+    <tr><td>BFS / DFS</td><td><code>O(V + E)</code></td><td><code>O(V)</code></td><td>Traversal, shortest path (unweighted), components</td></tr>
+    <tr><td>Topological sort</td><td><code>O(V + E)</code></td><td><code>O(V)</code></td><td>Dependency ordering in DAGs</td></tr>
+    <tr><td>Kosaraju / Tarjan SCC</td><td><code>O(V + E)</code></td><td><code>O(V)</code></td><td>Strongly connected components</td></tr>
+    <tr><td>Bridges / articulation points</td><td><code>O(V + E)</code></td><td><code>O(V)</code></td><td>Network reliability, critical links</td></tr>
+    <tr><td>Union-Find</td><td><code>O(&alpha;(n))</code> per op</td><td><code>O(V)</code></td><td>Dynamic connectivity, Kruskal's MST</td></tr>
+    <tr><td>Dijkstra (binary heap)</td><td><code>O((V+E) log V)</code></td><td><code>O(V)</code></td><td>Shortest path (non-negative weights)</td></tr>
+    <tr><td>Bellman-Ford</td><td><code>O(VE)</code></td><td><code>O(V)</code></td><td>Shortest path (handles negative weights)</td></tr>
+    <tr><td>Floyd-Warshall</td><td><code>O(V&sup3;)</code></td><td><code>O(V&sup2;)</code></td><td>All-pairs shortest paths</td></tr>
+    <tr><td>Greedy colouring</td><td><code>O(V + E)</code></td><td><code>O(V)</code></td><td>Approximate graph colouring</td></tr>
+    <tr><td>Hierholzer (Euler)</td><td><code>O(E)</code></td><td><code>O(E)</code></td><td>Euler path/circuit</td></tr>
+    <tr><td>Hamiltonian path</td><td>Exponential</td><td><code>O(V)</code></td><td>NP-complete &mdash; backtracking or DP bitmask</td></tr>
+    <tr><td>Planarity test</td><td><code>O(V)</code></td><td><code>O(V)</code></td><td>Hopcroft-Tarjan, Boyer-Myrvold</td></tr>
+  </table>
+  <div class="card green" style="margin-top:0.5em">
+    <p><strong style="color:var(--green)">Pattern:</strong> most fundamental graph algorithms run in <code>O(V + E)</code>. Exponential complexity is a red flag that the problem may be NP-hard &mdash; look for special structure (DAG, tree, planar) to unlock polynomial solutions.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 19 — Common Patterns & Techniques
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">19</span>
+    <h2>Common Patterns &amp; Techniques</h2>
+  </div>
+  <div class="cols cols-3" style="margin-top:0.3em">
+    <div class="card amber">
+      <h3>Multi-source BFS</h3>
+      <p>Start BFS from multiple sources simultaneously. Used for rotten oranges, nearest 0 in a grid, fire spread simulation.</p>
+      <pre><code class="python">queue = deque(all_sources)
+# standard BFS from here</code></pre>
+    </div>
+    <div class="card green">
+      <h3>0-1 BFS</h3>
+      <p>When edge weights are only 0 or 1, use a deque: push 0-weight neighbours to front, 1-weight to back. Runs in <code>O(V + E)</code>.</p>
+      <pre><code class="python">if weight == 0:
+    dq.appendleft(v)
+else:
+    dq.append(v)</code></pre>
+    </div>
+    <div class="card purple">
+      <h3>Implicit graphs</h3>
+      <p>The graph is never materialised &mdash; neighbours are generated on demand. Puzzles, game states, word ladders.</p>
+      <pre><code class="python">def neighbours(state):
+    # generate from rules
+    ...</code></pre>
+    </div>
+  </div>
+  <div class="cols cols-3" style="margin-top:0.3em">
+    <div class="card blue">
+      <h3>Bidirectional BFS</h3>
+      <p>Run BFS from both source and target simultaneously. Meets in the middle &mdash; reduces search space from <code>O(b^d)</code> to <code>O(b^(d/2))</code>.</p>
+    </div>
+    <div class="card red">
+      <h3>Graph as grid</h3>
+      <p>2D grids are implicit graphs. Each cell connects to 4 (or 8) neighbours. Flood fill, island counting, shortest path in a maze.</p>
+    </div>
+    <div class="card amber">
+      <h3>Bitmask DP on graphs</h3>
+      <p>For small <code>n</code> (&le; 20), represent visited sets as bitmasks. Travelling salesman: <code>O(2^n &middot; n^2)</code> DP.</p>
+    </div>
+  </div>
+  <div class="card green" style="margin-top:0.5em">
+    <p><strong style="color:var(--green)">Interview tip:</strong> most graph problems reduce to BFS/DFS + a twist. Identify the vertices, edges, and what "visited" means &mdash; the algorithm often writes itself.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 20 — Real-World Applications
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">20</span>
+    <h2>Real-World Applications</h2>
+  </div>
+  <table>
+    <tr><th>Domain</th><th>Graph model</th><th>Algorithms used</th></tr>
+    <tr><td>Social networks</td><td>Users = vertices, friendships = edges</td><td>BFS (degrees of separation), SCC, community detection</td></tr>
+    <tr><td>Navigation / maps</td><td>Intersections = vertices, roads = weighted edges</td><td>Dijkstra, A*, contraction hierarchies</td></tr>
+    <tr><td>Compilers</td><td>Interference graph (variables sharing lifetimes)</td><td>Graph colouring for register allocation</td></tr>
+    <tr><td>Package managers</td><td>Packages = vertices, dependencies = directed edges</td><td>Topological sort, cycle detection</td></tr>
+    <tr><td>Network infrastructure</td><td>Routers = vertices, links = edges</td><td>Bridges, articulation points, MST</td></tr>
+    <tr><td>Bioinformatics</td><td>DNA k-mers = edges in de Bruijn graph</td><td>Euler paths for genome assembly</td></tr>
+    <tr><td>Fraud detection</td><td>Accounts = vertices, transactions = edges</td><td>Cycle detection, SCC, anomaly scoring</td></tr>
+    <tr><td>Scheduling</td><td>Tasks = vertices, precedence = directed edges</td><td>Topological sort, critical path (DAG longest path)</td></tr>
+    <tr><td>Web crawling</td><td>Pages = vertices, hyperlinks = directed edges</td><td>BFS, PageRank (random walk on graph)</td></tr>
+    <tr><td>Garbage collection</td><td>Objects = vertices, references = edges</td><td>DFS reachability from root set</td></tr>
+  </table>
+  <div class="card amber" style="margin-top:0.5em">
+    <p><strong style="color:var(--amber)">Graphs are everywhere.</strong> Any time you have entities with pairwise relationships &mdash; whether explicit (friend lists) or implicit (grid cells) &mdash; you are working with a graph.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+  SLIDE 21 — Summary & Further Reading
+══════════════════════════════════════════════════════════════════ -->
+<section data-background-color="#0a0a0f">
+  <div class="slide-hdr">
+    <span class="tag">21</span>
+    <h2>Summary &amp; Further Reading</h2>
+  </div>
+  <div class="cols cols-2">
+    <div>
+      <h3>Key takeaways</h3>
+      <ul>
+        <li>Adjacency lists are the default representation &mdash; <code>O(V + E)</code> space, efficient neighbour iteration</li>
+        <li>BFS finds shortest paths in unweighted graphs; DFS is the workhorse for cycle detection, topological sort, and SCC</li>
+        <li>Topological sort only works on DAGs and runs in <code>O(V + E)</code></li>
+        <li>Tarjan's and Kosaraju's find SCCs in linear time</li>
+        <li>Bridges and articulation points identify single points of failure in networks</li>
+        <li>Graph colouring is NP-hard for <code>k &ge; 3</code> but greedy heuristics work well in practice</li>
+        <li>Euler paths are tractable (<code>O(E)</code>); Hamiltonian paths are NP-complete</li>
+        <li>Most interview graph problems reduce to BFS or DFS with a creative state definition</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Recommended reading</h3>
+      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.2em 0;"><span style="font-family:'JetBrains Mono',monospace; color:var(--amber); min-width:9em; font-size:0.9em;">CLRS</span><span style="color:var(--text)"><em>Introduction to Algorithms</em> &mdash; the canonical algorithms textbook; chapters 20&ndash;26 cover graphs comprehensively</span></div>
+      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.4em 0;"><span style="font-family:'JetBrains Mono',monospace; color:var(--amber); min-width:9em; font-size:0.9em;">Sedgewick</span><span style="color:var(--text)"><em>Algorithms, 4th ed.</em> &mdash; excellent graph algorithm visualisations and Java implementations</span></div>
+      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.4em 0;"><span style="font-family:'JetBrains Mono',monospace; color:var(--amber); min-width:9em; font-size:0.9em;">Kleinberg &amp; Tardos</span><span style="color:var(--text)"><em>Algorithm Design</em> &mdash; network flow, matching, and advanced graph topics with clear motivation</span></div>
+      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.4em 0;"><span style="font-family:'JetBrains Mono',monospace; color:var(--amber); min-width:9em; font-size:0.9em;">CP-Algorithms</span><span style="color:var(--text)"><a href="https://cp-algorithms.com">cp-algorithms.com</a> &mdash; competitive programming reference with proofs and implementations</span></div>
+      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.4em 0;"><span style="font-family:'JetBrains Mono',monospace; color:var(--amber); min-width:9em; font-size:0.9em;">MIT 6.006</span><span style="color:var(--text)">Erik Demaine's Introduction to Algorithms &mdash; <a href="https://ocw.mit.edu">free on MIT OCW</a></span></div>
+      <div class="card blue" style="margin-top:0.8em">
+        <p>
+        <span class="pill amber">BFS</span>
+        <span class="pill green">DFS</span>
+        <span class="pill purple">Tarjan</span>
+        <span class="pill amber">Kahn</span>
+        <span class="pill green">Union-Find</span>
+        <span class="pill purple">Hierholzer</span>
+        <span class="pill amber">Greedy colour</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div><!-- /slides -->
+</div><!-- /reveal -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/reveal.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.6.1/plugin/highlight/highlight.min.js"></script>
+<script>
+Reveal.initialize({
+  hash: true,
+  slideNumber: 'c/t',
+  transition: 'fade',
+  transitionSpeed: 'fast',
+  controls: true,
+  progress: true,
+  center: false,
+  width: 1100,
+  height: 900,
+  margin: 0.01,
+  plugins: [RevealHighlight],
+  highlight: { theme: 'monokai' }
+});
+</script>
+<script>
+(function(){
+  var h = Reveal.getConfig().height || 900;
+  var m = Reveal.getConfig().margin || 0.02;
+  var maxH = Math.floor(h * (1 - 2 * m)) + 'px';
+  function fixSlides(){
+    document.querySelectorAll('.reveal .slides>section,.reveal .slides>section>section').forEach(function(s){
+      s.style.display = 'block';
+      s.style.maxHeight = maxH;
+    });
+  }
+  Reveal.on('ready', fixSlides);
+  Reveal.on('slidechanged', fixSlides);
+})();
+</script>
+</body>
+</html>
