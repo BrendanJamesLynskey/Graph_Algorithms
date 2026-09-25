@@ -10,7 +10,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,400;1,700&family=Azeret+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,700&display=swap" rel="stylesheet">
 
   <style>
   :root {
@@ -30,14 +30,14 @@
   .reveal-viewport { background: var(--bg); }
   .reveal .slides section { background: transparent; }
 
-  .reveal { font-family: 'DM Sans', sans-serif; color: var(--text); }
-  .reveal h1, .reveal h2, .reveal h3 { font-family: 'Playfair Display', serif; font-weight: 700; }
+  .reveal { font-family: 'Schibsted Grotesk', sans-serif; color: var(--text); }
+  .reveal h1, .reveal h2, .reveal h3 { font-family: 'Schibsted Grotesk', serif; font-weight: 700; }
   .reveal h1 { font-size: 1.6em; color: var(--amber); line-height: 1.1; }
   .reveal h2 { font-size: 1.1em; color: var(--amber); margin-bottom: .2em; }
   .reveal h3 { font-size: .78em; color: var(--green); margin-bottom: .15em; }
   .reveal p  { font-size: .56em; line-height: 1.45; color: var(--text); }
   .reveal li { font-size: .54em; line-height: 1.45; margin-bottom: .1em; }
-  .reveal code { font-family: 'JetBrains Mono', monospace; font-size: .72em; }
+  .reveal code { font-family: 'Azeret Mono', monospace; font-size: .72em; }
   .reveal pre  { box-shadow: none; background: var(--bg3); border: 1px solid var(--border);
                  border-radius: 6px; padding: .3em .5em; margin: .25em 0; }
   .reveal pre code { font-size: .52em; line-height: 1.35; background: transparent; color: #242422; }
@@ -49,7 +49,7 @@
     padding-bottom: .2em; margin-bottom: .3em;
   }
   .slide-hdr .tag {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: 'Azeret Mono', monospace;
     font-size: .42em; font-weight: 500;
     color: var(--bg); background: var(--amber);
     padding: .1em .4em; border-radius: 3px;
@@ -92,14 +92,14 @@
   .p  { color: var(--purple); font-weight: 600; }
   .b  { color: var(--blue); font-weight: 600; }
   .r  { color: var(--red); font-weight: 600; }
-  .mono { font-family: 'JetBrains Mono', monospace; }
+  .mono { font-family: 'Azeret Mono', monospace; }
 
   /* ── SVG graph diagrams ── */
   svg.diagram { display: block; margin: 0 auto; overflow: visible; }
 
   /* ── pill badges ── */
   .pill {
-    display: inline-block; font-family: 'JetBrains Mono', monospace;
+    display: inline-block; font-family: 'Azeret Mono', monospace;
     font-size: .44em; padding: .08em .4em; border-radius: 99px;
     border: 1px solid; margin: 0 .08em;
   }
@@ -113,15 +113,15 @@
   /* title slide special */
   .title-slide h1 { font-size: 1.8em; }
   .title-slide .subtitle {
-    font-size: .7em; color: var(--green); font-family: 'DM Sans', sans-serif;
+    font-size: .7em; color: var(--green); font-family: 'Schibsted Grotesk', sans-serif;
     font-weight: 300; letter-spacing: .04em; margin: .3em 0 .6em;
   }
-  .title-slide .meta { font-size: .48em; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+  .title-slide .meta { font-size: .48em; color: var(--muted); font-family: 'Azeret Mono', monospace; }
 
   /* ── super-step animator ── */
   .ss-row {
     display: flex; gap: .25em; align-items: center;
-    margin: .1em 0; font-size: .55em; font-family: 'JetBrains Mono', monospace;
+    margin: .1em 0; font-size: .55em; font-family: 'Azeret Mono', monospace;
   }
   .ss-node {
     padding: .2em .55em; border-radius: 5px; font-size: .9em;
@@ -146,7 +146,7 @@
   SLIDE 01 — Title
 ══════════════════════════════════════════════════════════════════ -->
 <section class="title-slide" data-background-color="#fafaf8">
-  <div style="font-family:'JetBrains Mono',monospace; font-size:.5em; color:var(--muted); margin-bottom:.4em; letter-spacing:.1em;">COMPUTER SCIENCE FUNDAMENTALS SERIES</div>
+  <div style="font-family:'Azeret Mono',monospace; font-size:.5em; color:var(--muted); margin-bottom:.4em; letter-spacing:.1em;">COMPUTER SCIENCE FUNDAMENTALS SERIES</div>
   <h1>Graph<br>Algorithms</h1>
   <div class="subtitle">
     BFS &middot; DFS &middot; Topological sort &middot; Connected components &middot;<br>
@@ -186,24 +186,24 @@
         <svg viewBox="0 0 300 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
           <!-- Graph nodes -->
           <circle cx="60" cy="40" r="20" fill="#e7e7e2" stroke="#bf7d10" stroke-width="1.5"/>
-          <text x="60" y="45" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="14" fill="#bf7d10">0</text>
+          <text x="60" y="45" text-anchor="middle" font-family="'Azeret Mono',monospace" font-size="14" fill="#bf7d10">0</text>
           <circle cx="200" cy="40" r="20" fill="#e7e7e2" stroke="#1c815a" stroke-width="1.5"/>
-          <text x="200" y="45" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="14" fill="#1c815a">1</text>
+          <text x="200" y="45" text-anchor="middle" font-family="'Azeret Mono',monospace" font-size="14" fill="#1c815a">1</text>
           <circle cx="260" cy="140" r="20" fill="#e7e7e2" stroke="#6435bc" stroke-width="1.5"/>
-          <text x="260" y="145" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="14" fill="#6435bc">2</text>
+          <text x="260" y="145" text-anchor="middle" font-family="'Azeret Mono',monospace" font-size="14" fill="#6435bc">2</text>
           <circle cx="130" cy="140" r="20" fill="#e7e7e2" stroke="#2b3dc5" stroke-width="1.5"/>
-          <text x="130" y="145" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="14" fill="#2b3dc5">3</text>
+          <text x="130" y="145" text-anchor="middle" font-family="'Azeret Mono',monospace" font-size="14" fill="#2b3dc5">3</text>
           <!-- Edges -->
           <line x1="80" y1="40" x2="180" y2="40" stroke="#d1d1cb" stroke-width="1.5"/>
           <line x1="200" y1="60" x2="260" y2="120" stroke="#d1d1cb" stroke-width="1.5"/>
           <line x1="60" y1="60" x2="130" y2="120" stroke="#d1d1cb" stroke-width="1.5"/>
           <line x1="150" y1="140" x2="240" y2="140" stroke="#d1d1cb" stroke-width="1.5"/>
           <!-- Matrix -->
-          <text x="20" y="195" font-family="'JetBrains Mono',monospace" font-size="11" fill="#6a6a63">    0 1 2 3</text>
-          <text x="20" y="210" font-family="'JetBrains Mono',monospace" font-size="11" fill="#bf7d10">0 [<tspan fill="#161616">0 1 0 1</tspan>]</text>
-          <text x="20" y="225" font-family="'JetBrains Mono',monospace" font-size="11" fill="#1c815a">1 [<tspan fill="#161616">1 0 1 0</tspan>]</text>
-          <text x="20" y="240" font-family="'JetBrains Mono',monospace" font-size="11" fill="#6435bc">2 [<tspan fill="#161616">0 1 0 1</tspan>]</text>
-          <text x="20" y="255" font-family="'JetBrains Mono',monospace" font-size="11" fill="#2b3dc5">3 [<tspan fill="#161616">1 0 1 0</tspan>]</text>
+          <text x="20" y="195" font-family="'Azeret Mono',monospace" font-size="11" fill="#6a6a63">    0 1 2 3</text>
+          <text x="20" y="210" font-family="'Azeret Mono',monospace" font-size="11" fill="#bf7d10">0 [<tspan fill="#161616">0 1 0 1</tspan>]</text>
+          <text x="20" y="225" font-family="'Azeret Mono',monospace" font-size="11" fill="#1c815a">1 [<tspan fill="#161616">1 0 1 0</tspan>]</text>
+          <text x="20" y="240" font-family="'Azeret Mono',monospace" font-size="11" fill="#6435bc">2 [<tspan fill="#161616">0 1 0 1</tspan>]</text>
+          <text x="20" y="255" font-family="'Azeret Mono',monospace" font-size="11" fill="#2b3dc5">3 [<tspan fill="#161616">1 0 1 0</tspan>]</text>
         </svg>
       </div>
     </div>
@@ -370,10 +370,10 @@ def bfs(graph, start):
         <li>Articulation points and bridges</li>
       </ul>
       <h3 style="margin-top:0.5em">Edge classification (directed graphs)</h3>
-      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.2em 0;"><span style="font-family:'JetBrains Mono',monospace; color:var(--amber); min-width:7em; font-size:0.9em;">Tree edge</span><span style="color:var(--text)">Edge in the DFS tree itself</span></div>
-      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.2em 0;"><span style="font-family:'JetBrains Mono',monospace; color:var(--green); min-width:7em; font-size:0.9em;">Back edge</span><span style="color:var(--text)">Points to an ancestor &mdash; indicates a cycle</span></div>
-      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.2em 0;"><span style="font-family:'JetBrains Mono',monospace; color:var(--purple); min-width:7em; font-size:0.9em;">Forward edge</span><span style="color:var(--text)">Points to a descendant (non-tree)</span></div>
-      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.2em 0;"><span style="font-family:'JetBrains Mono',monospace; color:var(--blue); min-width:7em; font-size:0.9em;">Cross edge</span><span style="color:var(--text)">Points to a non-ancestor, non-descendant</span></div>
+      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.2em 0;"><span style="font-family:'Azeret Mono',monospace; color:var(--amber); min-width:7em; font-size:0.9em;">Tree edge</span><span style="color:var(--text)">Edge in the DFS tree itself</span></div>
+      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.2em 0;"><span style="font-family:'Azeret Mono',monospace; color:var(--green); min-width:7em; font-size:0.9em;">Back edge</span><span style="color:var(--text)">Points to an ancestor &mdash; indicates a cycle</span></div>
+      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.2em 0;"><span style="font-family:'Azeret Mono',monospace; color:var(--purple); min-width:7em; font-size:0.9em;">Forward edge</span><span style="color:var(--text)">Points to a descendant (non-tree)</span></div>
+      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.2em 0;"><span style="font-family:'Azeret Mono',monospace; color:var(--blue); min-width:7em; font-size:0.9em;">Cross edge</span><span style="color:var(--text)">Points to a non-ancestor, non-descendant</span></div>
     </div>
   </div>
 </section>
@@ -711,24 +711,24 @@ def is_bipartite(graph, n):
         <svg viewBox="0 0 280 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto">
           <!-- Left partition -->
           <circle cx="60" cy="40" r="18" fill="#f8e2c5" stroke="#bf7d10" stroke-width="1.5"/>
-          <text x="60" y="45" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#bf7d10">A</text>
+          <text x="60" y="45" text-anchor="middle" font-family="'Azeret Mono',monospace" font-size="12" fill="#bf7d10">A</text>
           <circle cx="60" cy="100" r="18" fill="#f8e2c5" stroke="#bf7d10" stroke-width="1.5"/>
-          <text x="60" y="105" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#bf7d10">B</text>
+          <text x="60" y="105" text-anchor="middle" font-family="'Azeret Mono',monospace" font-size="12" fill="#bf7d10">B</text>
           <circle cx="60" cy="160" r="18" fill="#f8e2c5" stroke="#bf7d10" stroke-width="1.5"/>
-          <text x="60" y="165" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#bf7d10">C</text>
+          <text x="60" y="165" text-anchor="middle" font-family="'Azeret Mono',monospace" font-size="12" fill="#bf7d10">C</text>
           <!-- Right partition -->
           <circle cx="220" cy="70" r="18" fill="#f1f1ee" stroke="#6435bc" stroke-width="1.5"/>
-          <text x="220" y="75" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#6435bc">D</text>
+          <text x="220" y="75" text-anchor="middle" font-family="'Azeret Mono',monospace" font-size="12" fill="#6435bc">D</text>
           <circle cx="220" cy="130" r="18" fill="#f1f1ee" stroke="#6435bc" stroke-width="1.5"/>
-          <text x="220" y="135" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="12" fill="#6435bc">E</text>
+          <text x="220" y="135" text-anchor="middle" font-family="'Azeret Mono',monospace" font-size="12" fill="#6435bc">E</text>
           <!-- Edges -->
           <line x1="78" y1="40" x2="202" y2="70" stroke="#d1d1cb" stroke-width="1.5"/>
           <line x1="78" y1="100" x2="202" y2="70" stroke="#d1d1cb" stroke-width="1.5"/>
           <line x1="78" y1="100" x2="202" y2="130" stroke="#d1d1cb" stroke-width="1.5"/>
           <line x1="78" y1="160" x2="202" y2="130" stroke="#d1d1cb" stroke-width="1.5"/>
           <!-- Labels -->
-          <text x="50" y="195" font-family="'DM Sans',sans-serif" font-size="10" fill="#bf7d10">Set 1</text>
-          <text x="205" y="195" font-family="'DM Sans',sans-serif" font-size="10" fill="#6435bc">Set 2</text>
+          <text x="50" y="195" font-family="'Schibsted Grotesk',sans-serif" font-size="10" fill="#bf7d10">Set 1</text>
+          <text x="205" y="195" font-family="'Schibsted Grotesk',sans-serif" font-size="10" fill="#6435bc">Set 2</text>
         </svg>
       </div>
       <h3 style="margin-top:0.5em">Applications</h3>
@@ -783,8 +783,8 @@ def is_bipartite(graph, n):
     <div>
       <h3>Key insight: low-link values</h3>
       <p>For each vertex <code>u</code>, <code>low[u]</code> is the smallest discovery time reachable from the subtree rooted at <code>u</code> (including back edges).</p>
-      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.2em 0;"><span style="font-family:'JetBrains Mono',monospace; color:var(--amber); min-width:7em; font-size:0.9em;">Bridge</span><span style="color:var(--text)">Edge <code>(u, v)</code> is a bridge if <code>low[v] > disc[u]</code></span></div>
-      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.2em 0;"><span style="font-family:'JetBrains Mono',monospace; color:var(--green); min-width:7em; font-size:0.9em;">Cut vertex</span><span style="color:var(--text)">Non-root <code>u</code> is a cut vertex if some child <code>v</code> has <code>low[v] &ge; disc[u]</code>. Root is a cut vertex if it has &ge; 2 DFS children.</span></div>
+      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.2em 0;"><span style="font-family:'Azeret Mono',monospace; color:var(--amber); min-width:7em; font-size:0.9em;">Bridge</span><span style="color:var(--text)">Edge <code>(u, v)</code> is a bridge if <code>low[v] > disc[u]</code></span></div>
+      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.2em 0;"><span style="font-family:'Azeret Mono',monospace; color:var(--green); min-width:7em; font-size:0.9em;">Cut vertex</span><span style="color:var(--text)">Non-root <code>u</code> is a cut vertex if some child <code>v</code> has <code>low[v] &ge; disc[u]</code>. Root is a cut vertex if it has &ge; 2 DFS children.</span></div>
       <h3 style="margin-top:0.5em">Applications</h3>
       <ul>
         <li>Network reliability analysis &mdash; single points of failure</li>
@@ -893,8 +893,8 @@ def is_bipartite(graph, n):
         return path
     return None</code></pre>
       <h3 style="margin-top:0.5em">Sufficient conditions</h3>
-      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.2em 0;"><span style="font-family:'JetBrains Mono',monospace; color:var(--amber); min-width:5em; font-size:0.9em;">Dirac</span><span style="color:var(--text)">If every vertex has degree &ge; <code>n/2</code>, a Hamiltonian cycle exists</span></div>
-      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.2em 0;"><span style="font-family:'JetBrains Mono',monospace; color:var(--green); min-width:5em; font-size:0.9em;">Ore</span><span style="color:var(--text)">If <code>deg(u) + deg(v) &ge; n</code> for every non-adjacent pair, a Hamiltonian cycle exists</span></div>
+      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.2em 0;"><span style="font-family:'Azeret Mono',monospace; color:var(--amber); min-width:5em; font-size:0.9em;">Dirac</span><span style="color:var(--text)">If every vertex has degree &ge; <code>n/2</code>, a Hamiltonian cycle exists</span></div>
+      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.2em 0;"><span style="font-family:'Azeret Mono',monospace; color:var(--green); min-width:5em; font-size:0.9em;">Ore</span><span style="color:var(--text)">If <code>deg(u) + deg(v) &ge; n</code> for every non-adjacent pair, a Hamiltonian cycle exists</span></div>
     </div>
   </div>
 </section>
@@ -963,7 +963,7 @@ def is_bipartite(graph, n):
     <div>
       <p>A graph is <strong>planar</strong> if it can be drawn on a plane without any edge crossings.</p>
       <h3>Euler's formula for planar graphs</h3>
-      <p style="font-size:0.65em; color:var(--amber); font-family:'JetBrains Mono',monospace; margin:0.4em 0;">V - E + F = 2</p>
+      <p style="font-size:0.65em; color:var(--amber); font-family:'Azeret Mono',monospace; margin:0.4em 0;">V - E + F = 2</p>
       <p>where <code>V</code> = vertices, <code>E</code> = edges, <code>F</code> = faces (including the outer face).</p>
       <h3 style="margin-top:0.5em">Corollaries</h3>
       <ul>
@@ -988,8 +988,8 @@ def is_bipartite(graph, n):
         </div>
       </div>
       <h3 style="margin-top:0.5em">Testing planarity</h3>
-      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.2em 0;"><span style="font-family:'JetBrains Mono',monospace; color:var(--amber); min-width:9em; font-size:0.9em;">Hopcroft-Tarjan</span><span style="color:var(--text)">Linear-time <code>O(V)</code> planarity test based on path addition</span></div>
-      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.2em 0;"><span style="font-family:'JetBrains Mono',monospace; color:var(--green); min-width:9em; font-size:0.9em;">Boyer-Myrvold</span><span style="color:var(--text)">Linear-time algorithm that also produces the planar embedding or a Kuratowski subgraph</span></div>
+      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.2em 0;"><span style="font-family:'Azeret Mono',monospace; color:var(--amber); min-width:9em; font-size:0.9em;">Hopcroft-Tarjan</span><span style="color:var(--text)">Linear-time <code>O(V)</code> planarity test based on path addition</span></div>
+      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.2em 0;"><span style="font-family:'Azeret Mono',monospace; color:var(--green); min-width:9em; font-size:0.9em;">Boyer-Myrvold</span><span style="color:var(--text)">Linear-time algorithm that also produces the planar embedding or a Kuratowski subgraph</span></div>
       <h3 style="margin-top:0.5em">Applications</h3>
       <ul>
         <li>Circuit board layout (PCB routing)</li>
@@ -1184,11 +1184,11 @@ else:
     </div>
     <div>
       <h3>Recommended reading</h3>
-      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.2em 0;"><span style="font-family:'JetBrains Mono',monospace; color:var(--amber); min-width:9em; font-size:0.9em;">CLRS</span><span style="color:var(--text)"><em>Introduction to Algorithms</em> &mdash; the canonical algorithms textbook; chapters 20&ndash;26 cover graphs comprehensively</span></div>
-      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.4em 0;"><span style="font-family:'JetBrains Mono',monospace; color:var(--amber); min-width:9em; font-size:0.9em;">Sedgewick</span><span style="color:var(--text)"><em>Algorithms, 4th ed.</em> &mdash; excellent graph algorithm visualisations and Java implementations</span></div>
-      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.4em 0;"><span style="font-family:'JetBrains Mono',monospace; color:var(--amber); min-width:9em; font-size:0.9em;">Kleinberg &amp; Tardos</span><span style="color:var(--text)"><em>Algorithm Design</em> &mdash; network flow, matching, and advanced graph topics with clear motivation</span></div>
-      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.4em 0;"><span style="font-family:'JetBrains Mono',monospace; color:var(--amber); min-width:9em; font-size:0.9em;">CP-Algorithms</span><span style="color:var(--text)"><a href="https://cp-algorithms.com">cp-algorithms.com</a> &mdash; competitive programming reference with proofs and implementations</span></div>
-      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.4em 0;"><span style="font-family:'JetBrains Mono',monospace; color:var(--amber); min-width:9em; font-size:0.9em;">MIT 6.006</span><span style="color:var(--text)">Erik Demaine's Introduction to Algorithms &mdash; <a href="https://ocw.mit.edu">free on MIT OCW</a></span></div>
+      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.2em 0;"><span style="font-family:'Azeret Mono',monospace; color:var(--amber); min-width:9em; font-size:0.9em;">CLRS</span><span style="color:var(--text)"><em>Introduction to Algorithms</em> &mdash; the canonical algorithms textbook; chapters 20&ndash;26 cover graphs comprehensively</span></div>
+      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.4em 0;"><span style="font-family:'Azeret Mono',monospace; color:var(--amber); min-width:9em; font-size:0.9em;">Sedgewick</span><span style="color:var(--text)"><em>Algorithms, 4th ed.</em> &mdash; excellent graph algorithm visualisations and Java implementations</span></div>
+      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.4em 0;"><span style="font-family:'Azeret Mono',monospace; color:var(--amber); min-width:9em; font-size:0.9em;">Kleinberg &amp; Tardos</span><span style="color:var(--text)"><em>Algorithm Design</em> &mdash; network flow, matching, and advanced graph topics with clear motivation</span></div>
+      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.4em 0;"><span style="font-family:'Azeret Mono',monospace; color:var(--amber); min-width:9em; font-size:0.9em;">CP-Algorithms</span><span style="color:var(--text)"><a href="https://cp-algorithms.com">cp-algorithms.com</a> &mdash; competitive programming reference with proofs and implementations</span></div>
+      <div style="display:flex; gap:0.6em; align-items:baseline; font-size:0.52em; margin:0.4em 0;"><span style="font-family:'Azeret Mono',monospace; color:var(--amber); min-width:9em; font-size:0.9em;">MIT 6.006</span><span style="color:var(--text)">Erik Demaine's Introduction to Algorithms &mdash; <a href="https://ocw.mit.edu">free on MIT OCW</a></span></div>
       <div class="card blue" style="margin-top:0.8em">
         <p>
         <span class="pill amber">BFS</span>
